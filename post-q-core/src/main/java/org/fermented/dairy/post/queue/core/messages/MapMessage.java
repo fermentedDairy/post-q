@@ -1,89 +1,23 @@
 package org.fermented.dairy.post.queue.core.messages;
 
-import exceptions.MessageRuntimeException;
+import org.fermented.dairy.post.queue.core.messages.internal.MapMessageImpl;
 
-import java.time.ZonedDateTime;
 import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
 
 @SuppressWarnings("unused")
-public record MapMessage(
-        UUID messageId,
-        ZonedDateTime sentTimeStamp,
-        Optional<UUID> correlationId,
-        String destinationQueue,
-        Optional<String> replyToQueue,
-        boolean redelivered,
-        int redeliveryCount,
-        Map<String, String> body
-) implements Message {
+public sealed interface MapMessage extends Message permits MapMessageImpl {
 
-    public String getString(final String key) {
-        final Object value = body.get(key);
-        if (value == null) {
-            return null;
-        }
-        return value.toString();
-    }
+    String getString(String key);
 
-    public Integer getInteger(final String key) {
-        final String value = body.get(key);
-        if (value == null) {
-            return null;
-        }
-        try {
-            return Integer.parseInt(value);
-        } catch (NumberFormatException e) {
-            throw new MessageRuntimeException("Value for key " + key + " is not an integer", e);
-        }
-    }
+    Integer getInteger(String key);
 
-    public Long getLong(final String key) {
-        final String value = body.get(key);
-        if (value == null) {
-            return null;
-        }
-        try {
-            return Long.parseLong(value);
-        } catch (NumberFormatException e) {
-            throw new MessageRuntimeException("Value for key " + key + " is not a long", e);
-        }
-    }
+    Long getLong(String key);
 
-    public Double getDouble(final String key) {
-        final String value = body.get(key);
-        if (value == null) {
-            return null;
-        }
-        try {
-            return Double.parseDouble(value);
-        } catch (NumberFormatException e) {
-            throw new MessageRuntimeException("Value for key " + key + " is not a double", e);
-        }
-    }
+    Double getDouble(String key);
 
-    public Float getFloat(final String key) {
-        final String value = body.get(key);
-        if (value == null) {
-            return null;
-        }
-        try {
-            return Float.parseFloat(value);
-        } catch (NumberFormatException e) {
-            throw new MessageRuntimeException("Value for key " + key + " is not a float", e);
-        }
-    }
+    Float getFloat(String key);
 
-    public Boolean getBoolean(final String key) {
-        final String value = body.get(key);
-        if (value == null) {
-            return null;
-        }
-        try {
-            return Boolean.parseBoolean(value);
-        } catch (NumberFormatException e) {
-            throw new MessageRuntimeException("Value for key " + key + " is not a boolean", e);
-        }
-    }
+    Boolean getBoolean(String key);
+
+    Map<String, String> body();
 }

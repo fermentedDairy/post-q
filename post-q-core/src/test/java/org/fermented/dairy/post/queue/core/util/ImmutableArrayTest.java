@@ -1,5 +1,6 @@
 package org.fermented.dairy.post.queue.core.util;
 
+import org.fermented.dairy.post.queue.core.immutable.ImmutableArray;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
