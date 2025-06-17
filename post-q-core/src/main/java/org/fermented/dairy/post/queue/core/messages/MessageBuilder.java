@@ -203,43 +203,34 @@ public class MessageBuilder {
     }
     //</editor-fold>
 
-    /**
-     * Creates a new instance of {@code JsonMessageBuilder}.
-     *
-     * This method provides a fluent interface for constructing JSON messages,
-     * allowing customization of the message's body and serialization/deserialization strategy.
-     *
-     * @param <T> The type of the message body.
-     * @return A {@code JsonMessageBuilder} instance for constructing JSON messages.
-     */
+    /// Creates a new instance of `JsonMessageBuilder`.
+    /// This method provides a fluent interface for constructing JSON messages,
+    /// allowing customization of the message's body and serialization/deserialization strategy.
+    ///
+    /// @param <T> The type of the message body.
+    /// @return A `JsonMessageBuilder` instance for constructing JSON messages.
     public static <T> JsonMessageBuilder<T> json() {
         return new JsonMessageBuilder<T>();
     }
 
-    /**
-     * Creates a new instance of {@code ObjectMessageBuilder}.
-     *
-     * This method provides a fluent interface for constructing messages
-     * containing serialized Java objects as their payload. It allows for
-     * customization and configuration of the message's metadata and body.
-     *
-     * @param <T> The type of the object that will be serialized and set as the message body.
-     * @return An {@code ObjectMessageBuilder} instance used for constructing object-based messages.
-     */
+    /// Creates a new instance of `ObjectMessageBuilder`.
+    /// This method provides a fluent interface for constructing messages
+    /// containing serialized Java objects as their payload. It allows for
+    /// customization and configuration of the message's metadata and body.
+    ///
+    /// @param <T> The type of the object that will be serialized and set as the message body.
+    /// @return An `ObjectMessageBuilder` instance used for constructing object-based messages.
     public static <T> ObjectMessageBuilder<T> object() {
         return new ObjectMessageBuilder<T>();
     }
 
-    /**
-     * Creates a new instance of {@code MapMessageBuilder}.
-     *
-     * This method provides a fluent interface for constructing messages containing
-     * key-value pairs as their body. It allows customization and configuration
-     * of the message's metadata and body before construction.
-     *
-     * @param <T> The type of the message body.
-     * @return A {@code MapMessageBuilder} instance used for constructing map-based messages.
-     */
+    /// Creates a new instance of `MapMessageBuilder`.
+    /// This method provides a fluent interface for constructing messages containing
+    /// key-value pairs as their body. It allows customization and configuration
+    /// of the message's metadata and body before construction.
+    ///
+    /// @param <T> The type of the message body.
+    /// @return A `MapMessageBuilder` instance used for constructing map-based messages.
     public static <T> MapMessageBuilder<T> map() {
         return new MapMessageBuilder<T>();
     }
