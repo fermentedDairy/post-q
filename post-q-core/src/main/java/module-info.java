@@ -7,4 +7,7 @@ module post.q.core {
     exports org.fermented.dairy.post.queue.core.immutable;
     exports org.fermented.dairy.post.queue.core.serialization;
     exports org.fermented.dairy.post.queue.core.util;
+
+    //Required for tests
+    opens org.fermented.dairy.post.queue.core.serialization.internal to com.fasterxml.jackson.databind;
 }
