@@ -4,7 +4,11 @@ import org.fermented.dairy.post.queue.core.serialization.DeserializationExceptio
 import org.fermented.dairy.post.queue.core.serialization.SerDeStrategy;
 import org.fermented.dairy.post.queue.core.serialization.SerializationException;
 
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
 public class JavaSerializationStrategy implements SerDeStrategy<byte[]> {
 
@@ -34,7 +38,7 @@ public class JavaSerializationStrategy implements SerDeStrategy<byte[]> {
                 final ObjectInputStream objectInputStream = new ObjectInputStream(bais)
         ){
             var value = objectInputStream.readObject();
-            if (destinationClass.isInstance(value)) {
+            if (value == null || destinationClass.isInstance(value)) {
                 return destinationClass.cast(value);
             }
             throw new DeserializationException("Could not deserialize. Expected " + destinationClass.getCanonicalName() + " but got " + value.getClass().getCanonicalName());
