@@ -4,5 +4,5 @@ clean:
 build:
 	./mvnw clean package
 
-publishLocal:
+install:
 	./mvnw clean install
