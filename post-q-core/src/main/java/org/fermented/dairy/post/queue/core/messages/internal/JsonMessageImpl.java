@@ -4,6 +4,7 @@ import org.fermented.dairy.post.queue.core.messages.JsonMessage;
 import org.fermented.dairy.post.queue.core.serialization.JsonSerDeStrategy;
 
 import java.time.ZonedDateTime;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -19,7 +20,8 @@ public record JsonMessageImpl(
         boolean redelivered,
         int redeliveryCount,
         JsonSerDeStrategy serDeStrategy,
-        String body
+        String body,
+        Map<String, String> metaData
 ) implements JsonMessage {
 
     public JsonMessageImpl(
@@ -31,7 +33,8 @@ public record JsonMessageImpl(
             boolean redelivered,
             int redeliveryCount,
             JsonSerDeStrategy serDeStrategy,
-            Object body
+            Object body,
+            Map<String, String> metaData
     ) {
         this(
                 messageId,
@@ -42,7 +45,8 @@ public record JsonMessageImpl(
                 redelivered,
                 redeliveryCount,
                 serDeStrategy,
-                serDeStrategy.serialize(body)
+                serDeStrategy.serialize(body),
+                metaData
         );
     }
 
@@ -53,6 +57,7 @@ public record JsonMessageImpl(
         destinationQueue = required(destinationQueue);
         replyToQueue = orDefault(replyToQueue, Optional::empty);
         body = required(body);
+        metaData = metaData.isEmpty() ? Map.of() : Map.copyOf(metaData); //Make immutable
     }
 
     @Override

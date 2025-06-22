@@ -17,7 +17,7 @@ public class MessageBuilder {
 
     //<editor-fold desc="MessageBuilderInt">
     @SuppressWarnings("unused")
-    private abstract static class MessageBuilderInt {
+    private sealed abstract static class MessageBuilderInt<T extends MessageBuilderInt> {
      protected UUID messageId;
      protected ZonedDateTime sentTimeStamp = ZonedDateTime.now();
      protected UUID correlationId;
@@ -25,77 +25,82 @@ public class MessageBuilder {
      protected String replyToQueue;
      protected boolean redelivered = false;
      protected int redeliveryCount = 0;
+     protected Map<String, String> metaData;
 
      public UUID correlationId() {
          return correlationId;
      }
 
-     public MessageBuilderInt correlationId(UUID correlationId) {
+     public T correlationId(UUID correlationId) {
          this.correlationId = correlationId;
-         return this;
+         return thisAsChild();
      }
 
      public String destinationQueue() {
          return destinationQueue;
      }
 
-     public MessageBuilderInt destinationQueue(String destinationQueue) {
+     public T destinationQueue(String destinationQueue) {
          this.destinationQueue = destinationQueue;
-         return this;
+         return thisAsChild();
      }
 
      public UUID messageId() {
          return messageId;
      }
 
-     public MessageBuilderInt messageId(UUID messageId) {
+     public T messageId(UUID messageId) {
          this.messageId = messageId;
-         return this;
+         return thisAsChild();
      }
 
      public boolean redelivered() {
          return redelivered;
      }
 
-     public MessageBuilderInt redelivered(boolean redelivered) {
+     public T redelivered(boolean redelivered) {
          this.redelivered = redelivered;
-         return this;
+         return thisAsChild();
      }
 
      public int redeliveryCount() {
          return redeliveryCount;
      }
 
-     public MessageBuilderInt redeliveryCount(int redeliveryCount) {
+     public T redeliveryCount(int redeliveryCount) {
          this.redeliveryCount = redeliveryCount;
-         return this;
+         return thisAsChild();
      }
 
      public String replyToQueue() {
          return replyToQueue;
      }
 
-     public MessageBuilderInt replyToQueue(String replyToQueue) {
+     public T replyToQueue(String replyToQueue) {
          this.replyToQueue = replyToQueue;
-         return this;
+         return thisAsChild();
      }
 
      public ZonedDateTime sentTimeStamp() {
          return sentTimeStamp;
      }
 
-     public MessageBuilderInt sentTimeStamp(ZonedDateTime sentTimeStamp) {
+     public T sentTimeStamp(ZonedDateTime sentTimeStamp) {
          this.sentTimeStamp = sentTimeStamp;
-         return this;
+         return thisAsChild();
      }
 
      public abstract Message build();
+
+     private T thisAsChild(){
+        return (T) this;
+     }
     }
     //</editor-fold>
 
     //<editor-fold desc="JsonMessageBuilder">
     @SuppressWarnings("unused")
-    public static class JsonMessageBuilder<T> extends MessageBuilderInt {
+    public static final class JsonMessageBuilder<T> extends MessageBuilderInt<JsonMessageBuilder<T>> {
 
         private JsonSerDeStrategy serDeStrategy = DefaultJacksonStrategy.INSTANCE;
         private T body;
@@ -130,7 +135,8 @@ public class MessageBuilder {
                     redelivered,
                     redeliveryCount,
                     serDeStrategy,
-                    body
+                    body,
+                    metaData
             );
         }
     }
@@ -138,7 +144,7 @@ public class MessageBuilder {
 
     //<editor-fold desc="ObjectMessageBuilder">
     @SuppressWarnings("unused")
-    public static class ObjectMessageBuilder<T> extends MessageBuilderInt {
+    public static final class ObjectMessageBuilder<T> extends MessageBuilderInt<ObjectMessageBuilder<T>> {
 
         private T body;
 
@@ -164,14 +170,15 @@ public class MessageBuilder {
                     Optional.ofNullable(replyToQueue),
                     redelivered,
                     redeliveryCount,
-                    new ImmutableArray<>(box(JavaSerializationStrategy.INSTANCE.serialize(body)))
+                    new ImmutableArray<>(box(JavaSerializationStrategy.INSTANCE.serialize(body))),
+                    metaData
             );
         }
     }
     //</editor-fold>
 
     //<editor-fold desc="MapMessageBuilder">
-    public static class MapMessageBuilder<T> extends MessageBuilderInt {
+    public static final class MapMessageBuilder extends MessageBuilderInt<MapMessageBuilder> {
 
         private Map<String, String> body;
 
@@ -181,7 +188,7 @@ public class MessageBuilder {
             return body;
         }
 
-        public MapMessageBuilder<T> body(Map<String, String> body) {
+        public MapMessageBuilder body(Map<String, String> body) {
             this.body = body;
             return this;
         }
@@ -197,7 +204,8 @@ public class MessageBuilder {
                     Optional.ofNullable(replyToQueue),
                     redelivered,
                     redeliveryCount,
-                    body
+                    body,
+                    metaData
             );
         }
     }
@@ -210,7 +218,7 @@ public class MessageBuilder {
     /// @param <T> The type of the message body.
     /// @return A `JsonMessageBuilder` instance for constructing JSON messages.
     public static <T> JsonMessageBuilder<T> json() {
-        return new JsonMessageBuilder<T>();
+        return new JsonMessageBuilder<>();
     }
 
     /// Creates a new instance of `ObjectMessageBuilder`.
@@ -221,7 +229,7 @@ public class MessageBuilder {
     /// @param <T> The type of the object that will be serialized and set as the message body.
     /// @return An `ObjectMessageBuilder` instance used for constructing object-based messages.
     public static <T> ObjectMessageBuilder<T> object() {
-        return new ObjectMessageBuilder<T>();
+        return new ObjectMessageBuilder<>();
     }
 
     /// Creates a new instance of `MapMessageBuilder`.
@@ -229,10 +237,9 @@ public class MessageBuilder {
     /// key-value pairs as their body. It allows customization and configuration
     /// of the message's metadata and body before construction.
     ///
-    /// @param <T> The type of the message body.
     /// @return A `MapMessageBuilder` instance used for constructing map-based messages.
-    public static <T> MapMessageBuilder<T> map() {
-        return new MapMessageBuilder<T>();
+    public static MapMessageBuilder map() {
+        return new MapMessageBuilder();
     }
 
     private static Byte[] box(byte[] bytes) {
