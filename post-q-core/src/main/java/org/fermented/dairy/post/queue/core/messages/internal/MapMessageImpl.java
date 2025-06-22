@@ -20,7 +20,8 @@ public record MapMessageImpl(
         Optional<String> replyToQueue,
         boolean redelivered,
         int redeliveryCount,
-        Map<String, String> body
+        Map<String, String> body,
+        Map<String, String> metaData
 ) implements MapMessage {
 
     public MapMessageImpl {
@@ -30,6 +31,8 @@ public record MapMessageImpl(
         destinationQueue = required(destinationQueue);
         replyToQueue = orDefault(replyToQueue, Optional::empty);
         body = required(body);
+        final Map<String, String> tmpMetaData = orDefault(metaData, Map::of);
+        metaData = tmpMetaData.isEmpty() ? Map.of() : Map.copyOf(tmpMetaData); //Make immutable
     }
 
     //<editor-fold desc="Value fetchers">

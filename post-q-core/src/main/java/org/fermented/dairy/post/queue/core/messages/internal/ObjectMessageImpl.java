@@ -5,6 +5,7 @@ import org.fermented.dairy.post.queue.core.immutable.ImmutableArray;
 import org.fermented.dairy.post.queue.core.serialization.internal.JavaSerializationStrategy;
 
 import java.time.ZonedDateTime;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -19,7 +20,8 @@ public record ObjectMessageImpl(
         Optional<String> replyToQueue,
         boolean redelivered,
         int redeliveryCount,
-        ImmutableArray<Byte> body
+        ImmutableArray<Byte> body,
+        Map<String, String> metaData
 ) implements ObjectMessage {
 
     public ObjectMessageImpl {
@@ -29,6 +31,7 @@ public record ObjectMessageImpl(
         destinationQueue = required(destinationQueue);
         replyToQueue = orDefault(replyToQueue, Optional::empty);
         body = required(body);
+        metaData = metaData.isEmpty() ? Map.of() : Map.copyOf(metaData);
     }
 
     @Override

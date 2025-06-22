@@ -1,6 +1,7 @@
 package org.fermented.dairy.post.queue.core.messages;
 
 import java.time.ZonedDateTime;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -58,4 +59,5 @@ public sealed interface Message permits JsonMessage, MapMessage, ObjectMessage {
     /// @return an integer representing the redelivery count.
     int redeliveryCount();
 
+    Map<String, String> metaData();
 }

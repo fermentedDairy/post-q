@@ -6,10 +6,12 @@ Using the DB to facilitate queues would be terrible for inter-system comms and w
 Spring integration already has a mode that allows for using the DB to mediate queues.
 
 ## Features
-- [ ] Single Message Interface
+- [x] Single Message Interface
   - [x] JSON Message (JSON text SerDe)
   - [x] MAP message (Key-value pairs (as a map))
-  - [ ] Object Message (serialised java object in the body)
+  - [x] Object Message (serialised java object in the body)
+  - [x] Message Metadata
+- [ ] Processor interface
 - [ ] Message processing in virtual threads
 - [ ] Bulk message fetching
 - [ ] ACID (message level)
