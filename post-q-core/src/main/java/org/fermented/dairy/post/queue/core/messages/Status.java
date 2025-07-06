@@ -13,5 +13,7 @@ public enum Status {
     /// Indicates that the message has been retried or resent after a previous delivery attempt.
     RESENT,
     /// Indicates that the message or process has been successfully completed.
-    PROCESSED
+    PROCESSED,
+    /// Indicates that a message could not be delivered.
+    UNDELIVERABLE
 }
