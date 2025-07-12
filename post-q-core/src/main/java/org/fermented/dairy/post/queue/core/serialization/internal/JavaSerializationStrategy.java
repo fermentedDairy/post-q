@@ -17,7 +17,7 @@ public class JavaSerializationStrategy implements SerDeStrategy<byte[]> {
     private JavaSerializationStrategy() {}
 
     @Override
-    public byte[] serialize(Object object) throws SerializationException {
+    public byte[] serialize(final Object object) throws SerializationException {
         try(
                 final ByteArrayOutputStream baos = new ByteArrayOutputStream();
                 final ObjectOutputStream objectOutputStream = new ObjectOutputStream(baos)
@@ -25,24 +25,24 @@ public class JavaSerializationStrategy implements SerDeStrategy<byte[]> {
             objectOutputStream.writeObject(object);
             objectOutputStream.flush();
             return baos.toByteArray();
-        } catch (IOException e) {
+        } catch (final IOException e) {
             throw new SerializationException("Could Not Serialize", e);
         }
     }
 
     @Override
-    public <T> T deserialize(byte[] serialized, Class<T> destinationClass) throws DeserializationException {
+    public <T> T deserialize(final byte[] serialized, final Class<T> destinationClass) throws DeserializationException {
 
         try(
                 final ByteArrayInputStream bais = new ByteArrayInputStream(serialized);
                 final ObjectInputStream objectInputStream = new ObjectInputStream(bais)
         ){
-            var value = objectInputStream.readObject();
+            final var value = objectInputStream.readObject();
             if (value == null || destinationClass.isInstance(value)) {
                 return destinationClass.cast(value);
             }
             throw new DeserializationException("Could not deserialize. Expected " + destinationClass.getCanonicalName() + " but got " + value.getClass().getCanonicalName());
-        } catch (IOException | ClassNotFoundException e) {
+        } catch (final IOException | ClassNotFoundException e) {
             throw new DeserializationException("Could not deserialize", e);
         }
     }

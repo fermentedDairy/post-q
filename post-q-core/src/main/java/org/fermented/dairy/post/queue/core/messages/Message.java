@@ -59,5 +59,10 @@ public sealed interface Message permits JsonMessage, MapMessage, ObjectMessage {
     /// @return an integer representing the redelivery count.
     int redeliveryCount();
 
+    /// Retrieves the metadata associated with this message.
+    /// Metadata provides additional information about the message
+    /// in the form of key-value pairs.
+    ///
+    /// @return a Map containing the metadata as key-value pairs.
     Map<String, String> metaData();
 }

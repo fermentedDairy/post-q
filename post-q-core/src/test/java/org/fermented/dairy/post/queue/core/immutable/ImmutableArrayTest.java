@@ -1,6 +1,5 @@
-package org.fermented.dairy.post.queue.core.util;
+package org.fermented.dairy.post.queue.core.immutable;
 
-import org.fermented.dairy.post.queue.core.immutable.ImmutableArray;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -25,7 +24,7 @@ class ImmutableArrayTest {
         final String[] array = {"a", "b", "c", "e", "f", "g"};
         final ImmutableArray<String> immutableArray = new ImmutableArray<>(array);
         int i = 0;
-        for(String s : immutableArray) {
+        for(final String s : immutableArray) {
             assertEquals(array[i++], s);
         }
     }
@@ -36,7 +35,7 @@ class ImmutableArrayTest {
         final String[] array = {};
         final ImmutableArray<String> immutableArray = new ImmutableArray<>(array);
         int i = 0;
-        for(String _ : immutableArray) {
+        for(final String _ : immutableArray) {
             i++;
         }
         assertEquals(0, i);
@@ -82,5 +81,28 @@ class ImmutableArrayTest {
                 () -> assertEquals(immutableArray.hashCode(), immutableArray2.hashCode()),
                 () -> assertNotEquals(immutableArray.hashCode(), immutableArray3.hashCode())
         );
+    }
+
+    @Test
+    @DisplayName("Test toString method")
+    void testToString() {
+        final String[] array = {"a", "b", "c"};
+        final ImmutableArray<String> immutableArray = new ImmutableArray<>(array);
+
+        final String result = immutableArray.toString();
+
+        assertAll("Validate string contents",
+                () -> assertTrue(result.contains("ImmutableArray")),
+                () -> assertTrue(result.contains("[a, b, c]"))
+        );
+    }
+
+    @Test
+    @DisplayName("Test array length")
+    void testArrayLength() {
+        final Integer[] array = {1, 2, 3, 4, 5};
+        final ImmutableArray<Integer> immutableArray = new ImmutableArray<>(array);
+
+        assertEquals(5, immutableArray.length());
     }
 }

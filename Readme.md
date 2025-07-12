@@ -11,7 +11,7 @@ Spring integration already has a mode that allows for using the DB to mediate qu
   - [x] MAP message (Key-value pairs (as a map))
   - [x] Object Message (serialised java object in the body)
   - [x] Message Metadata
-- [ ] Processor interface
+- [ ] Consumer interface
 - [ ] Message processing in virtual threads
 - [ ] Bulk message fetching
 - [ ] ACID (message level)
