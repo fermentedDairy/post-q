@@ -12,14 +12,24 @@ import org.fermented.dairy.post.queue.core.serialization.DeserializationExceptio
 /// of `Throwable` instances.
 public class MessageConsumerException extends Exception {
 
+    /// Constructs a new MessageConsumerException with the specified detail message.
+    ///
+    /// @param message the detail message (which is saved for later retrieval by the getMessage() method)
     public MessageConsumerException(final String message) {
         super(message);
     }
 
+    /// Constructs a new MessageConsumerException with the specified cause.
+    ///
+    /// @param cause the cause (which is saved for later retrieval by the getCause() method)
     public MessageConsumerException(final Throwable cause) {
         super(cause);
     }
 
+    /// Constructs a new MessageConsumerException with the specified detail message and cause.
+    ///
+    /// @param message the detail message (which is saved for later retrieval by the getMessage() method)
+    /// @param cause the cause (which is saved for later retrieval by the getCause() method)
     public MessageConsumerException(final String message, final Throwable cause) {
         super(message, cause);
     }

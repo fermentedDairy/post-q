@@ -30,7 +30,7 @@ public record ImmutableArray<T>(T[] array) implements Iterable<T> {
     /// @param index the index of the element to get
     /// @return the element at the specified index
     /// @throws IndexOutOfBoundsException if the index is out of bounds
-    public T get(int index) {
+    public T get(final int index) {
         if (index < 0 || index >= array.length) {
             throw new IndexOutOfBoundsException("Index " + index + " is out of bounds");
         }
@@ -45,6 +45,10 @@ public record ImmutableArray<T>(T[] array) implements Iterable<T> {
     }
 
 
+    /// Returns an iterator over the elements in this array.
+    /// This method allows ImmutableArray to be used in for-each loops.
+    ///
+    /// @return an iterator over the elements in this array
     @Override
     public Iterator<T> iterator() {
         return new Iterator<>() {
@@ -74,7 +78,7 @@ public record ImmutableArray<T>(T[] array) implements Iterable<T> {
     /// @param obj the object to test equality against
     /// @return true if the objects are equal, false otherwise
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         if (obj == null)
             return false;
         if (this == obj)
@@ -83,7 +87,7 @@ public record ImmutableArray<T>(T[] array) implements Iterable<T> {
             return Arrays.equals(array, (Object[]) obj);
         if (getClass() != obj.getClass())
             return false;
-        ImmutableArray<?> other = (ImmutableArray<?>) obj;
+        final ImmutableArray<?> other = (ImmutableArray<?>) obj;
         return Arrays.equals(array, other.array);
     }
 

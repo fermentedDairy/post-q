@@ -19,19 +19,19 @@ public final class DefaultJacksonStrategy implements JsonSerDeStrategy {
     private DefaultJacksonStrategy() {}
 
     @Override
-    public String serialize(Object object) throws SerializationException {
+    public String serialize(final Object object) throws SerializationException {
         try {
             return mapper.writeValueAsString(object);
-        } catch (JsonProcessingException e) {
+        } catch (final JsonProcessingException e) {
             throw new SerializationException("Serialization failed", e);
         }
     }
 
     @Override
-    public <T> T deserialize(String serialized, Class<T> destinationClass) throws DeserializationException {
+    public <T> T deserialize(final String serialized, final Class<T> destinationClass) throws DeserializationException {
         try {
             return mapper.readValue(serialized, destinationClass);
-        } catch (JsonProcessingException e) {
+        } catch (final JsonProcessingException e) {
             throw new DeserializationException("Deserialization failed for class " + destinationClass.getCanonicalName(), e);
         }
     }

@@ -7,6 +7,11 @@ import org.fermented.dairy.post.queue.core.serialization.DeserializationExceptio
 
 import java.util.Map;
 
+/// Specialized consumer interface for processing JSON messages.
+/// This interface extends MessageConsumer and provides functionality for consuming
+/// and processing messages that contain JSON data that can be deserialized to a specific type.
+///
+/// @param <T> the type to which the JSON data will be deserialized
 public interface JsonConsumer<T> extends MessageConsumer {
 
     @Override
@@ -24,7 +29,18 @@ public interface JsonConsumer<T> extends MessageConsumer {
         process(body, message.metaData());
     }
 
+    /// Processes the deserialized JSON message body along with its metadata.
+    /// This method is called by the default implementation of consume() after
+    /// the JSON message body has been successfully deserialized.
+    ///
+    /// @param message the deserialized message body
+    /// @param metaData the metadata associated with the message
+    /// @throws MessageConsumerException if an error occurs during message processing
     void process(final T message, final Map<String, String> metaData) throws MessageConsumerException;
 
+    /// Returns the class object representing the type to which JSON data should be deserialized.
+    /// This method is used for type-safe deserialization of JSON message bodies.
+    ///
+    /// @return the Class object for type T
     Class<T> getMessageType();
 }

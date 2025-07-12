@@ -18,7 +18,7 @@ public final class Objects {
      * @param <T> the type of the value
      * @return {@code value} if it is not null; otherwise a value provided by {@code defaultSupplier}
      */
-    public static <T> T orDefault(T value, Supplier<T> defaultSupplier) {
+    public static <T> T orDefault(final T value, final Supplier<T> defaultSupplier) {
         if (value == null) {
             return defaultSupplier.get();
         }
@@ -34,7 +34,7 @@ public final class Objects {
      * @return the provided value if it is not null
      * @throws InvalidMessageException if the provided value is null
      */
-    public static <T> T required(T value) {
+    public static <T> T required(final T value) {
         if (value == null)
             throw new InvalidMessageException("Value cannot be null");
         return value;
@@ -51,7 +51,7 @@ public final class Objects {
      * @return an unmodifiable copy of the provided map
      * @throws InvalidMessageException if the provided map is null
      */
-    public static <T, U> Map<T,U> required(Map<T,U> value) {
+    public static <T, U> Map<T,U> required(final Map<T,U> value) {
         if (value == null)
             throw new InvalidMessageException("Value cannot be null");
         return Map.copyOf(value);
@@ -67,7 +67,7 @@ public final class Objects {
      * @return an unmodifiable copy of the provided list
      * @throws InvalidMessageException if the provided list is null
      */
-    public static <T> List<T> required(List<T> value) {
+    public static <T> List<T> required(final List<T> value) {
         if (value == null)
             throw new InvalidMessageException("Value cannot be null");
         return List.copyOf(value);
@@ -83,7 +83,7 @@ public final class Objects {
      * @return an unmodifiable copy of the provided set
      * @throws InvalidMessageException if the provided set is null
      */
-    public static <T> Set<T> required(Set<T> value) {
+    public static <T> Set<T> required(final Set<T> value) {
         if (value == null)
             throw new InvalidMessageException("Value cannot be null");
         return Set.copyOf(value);
