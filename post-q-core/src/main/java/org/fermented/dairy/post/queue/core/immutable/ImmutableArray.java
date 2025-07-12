@@ -57,7 +57,7 @@ public record ImmutableArray<T>(T[] array) implements Iterable<T> {
 
             @Override
             public T next() {
-                var value = array[index];
+                final var value = array[index];
                 index++;
                 return value;
             }
@@ -69,7 +69,7 @@ public record ImmutableArray<T>(T[] array) implements Iterable<T> {
         return Arrays.hashCode(array);
     }
 
-    /// Equality tests based on array contents. Displays "unboxing" behaviour such that if compared to an array of T, then the internal array is compared for equality.
+    /// Equality tests based on array contents. Displays "unboxing" behavior such that if compared to an array of T, then the internal array is compared for equality.
     ///
     /// @param obj the object to test equality against
     /// @return true if the objects are equal, false otherwise
